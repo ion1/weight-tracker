@@ -1,0 +1,6 @@
+To plot your body mass index:
+
+mkdir -p ~/.config/weight-tracker
+echo height=1.23 >~/.config/weight-tracker/config
+
+where 1.23 is your height in meters.
