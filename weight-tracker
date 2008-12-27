@@ -1,0 +1,111 @@
+#!/bin/sh
+set -e
+
+old_db="$(dirname "$0")/weight.db"
+db="$HOME/.local/share/weight-tracker/weight.db"
+config="$HOME/.config/weight-tracker/config"
+
+height=
+if [ -e "$config" ]; then
+  . "$config"
+fi
+
+tempfiles=
+trap 'rm -f $tempfiles' 0 1 2 13 15
+
+usage() {
+  >&2 printf "USAGE: %s add WEIGHT\n" "$0"
+  >&2 printf "       %s plot FILENAME.PNG\n" "$0"
+}
+
+init_db() {
+  mkdir -p "$(dirname "$db")"
+  if [ -e "$old_db" ] && [ ! -e "$db" ]; then
+    mv "$old_db" "$db"
+  fi
+
+  sqlite3 "$db" <<E
+    create table if not exists weights (
+      id integer primary key autoincrement not null,
+      time datetime not null,
+      weight decimal(3,2) not null);
+E
+}
+
+add() {
+  sqlite3 "$db" <<E
+    insert into weights (time, weight) values (datetime('now'), $1);
+E
+}
+
+plot() {
+  local datafile="$(mktemp)"
+  local script="$(mktemp)"
+  tempfiles="$tempfiles $datafile $script"
+
+  sqlite3 "$db" >"$datafile" <<E
+    select strftime('%s', time, 'localtime'), weight from weights order by time;
+E
+
+  cat >>"$script" <<E
+    set term png transparent size 950, 400 enhanced
+    set output '$1'
+  
+    set xdata time
+    set timefmt '%s'
+    set format x '%Y-%m-%d'
+  
+    set ylabel 'kg'
+  
+    set xtics rotate 86400
+    set grid
+    set datafile separator '|'
+E
+  
+  if [ -z "$height" ]; then
+    cat >>"$script" <<E
+      plot '$datafile' using 1:2 notitle with points, \
+           '$datafile' using 1:2 notitle smooth bezier with lines
+E
+  else
+    cat >>"$script" <<E
+      set y2tics
+      set y2label 'BMI'
+  
+      plot '$datafile' using 1:2 notitle with points, \
+           '$datafile' using 1:2 title "weight" smooth bezier with lines, \
+           '$datafile' using 1:(\$2/$height**2) axes x1y2 title "BMI" smooth bezier with lines
+E
+  fi
+
+  gnuplot "$script"
+}
+
+init_db
+
+case "$1" in
+  add)
+    if [ -z "$2" ]; then
+      usage
+      exit 1
+    fi
+    add "$2"
+    ;;
+  plot)
+    if [ -z "$2" ]; then
+      usage
+      exit 1
+    fi
+    plot "$2"
+    ;;
+  ""|-h|--help)
+    usage
+    exit
+    ;;
+  *)
+    usage
+    exit 1
+    ;;
+esac
+
+# vim:set et sw=2 sts=2:
