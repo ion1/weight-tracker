@@ -1,6 +1,15 @@
+Usage:
+
+Run ‘weight-tracker add WEIGHT’ (in kilograms) every time you weigh yourself.
+The script adds a timestamped entry to the database.
+
+After you have a few entries, run ‘weight-tracker plot FILENAME.PNG’ to get a
+nice graph.
+
 To plot your body mass index:
 
 mkdir -p ~/.config/weight-tracker
 echo height=1.23 >~/.config/weight-tracker/config
 
 where 1.23 is your height in meters.
+
