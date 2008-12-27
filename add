@@ -1,0 +1,20 @@
+#!/bin/sh
+set -e
+
+cd "$(dirname "$0")"
+
+cmd() {
+  sqlite3 -column weight.db "$@"
+}
+
+cmd "
+  create table if not exists weights (
+    id integer primary key autoincrement not null,
+    time datetime not null,
+    weight decimal(3,2) not null);"
+
+if [ -n "$1" ]; then
+  cmd "insert into weights (time, weight) values (datetime('now'), $1);"
+fi
+
+cmd "select strftime('%Y-%m-%d %H:%M', time, 'localtime'), weight from weights order by time desc limit 8;"
