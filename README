@@ -13,3 +13,7 @@ echo height=1.23 >~/.config/weight-tracker/config
 
 where 1.23 is your height in meters.
 
+Dependencies:
+
+sqlite3, gnuplot
+
