@@ -67,6 +67,9 @@ E
   cat >>"$script" <<E
     set term png transparent size 950, 400 enhanced
     set output '$1'
+
+    set autoscale yfix
+    set autoscale y2fix
   
     set xdata time
     set timefmt '%s'
@@ -90,8 +93,8 @@ E
       set y2label 'BMI'
   
       plot '$datafile' using 1:2 notitle with points, \
-           '$datafile' using 1:2 title "weight" smooth bezier with lines, \
-           '$datafile' using 1:(\$2/$height**2) axes x1y2 title "BMI" smooth bezier with lines
+           '$datafile' using 1:2 notitle smooth bezier with lines, \
+           '$datafile' using 1:(\$2/$height**2) axes x1y2 notitle smooth bezier with lines
 E
   fi
 
