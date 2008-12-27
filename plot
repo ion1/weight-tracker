@@ -18,7 +18,6 @@ printf "%s" "
   set timefmt '%s'
   set format x '%Y-%m-%d'
 
-  set title \"As a side effect, a drug caused me to gain weight. Let's try to lose some now that I'm off the drug. :-)\"
   set ylabel 'kg'
 
   set xtics rotate 86400
