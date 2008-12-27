@@ -1,10 +1,16 @@
 #!/bin/sh
 set -e
 
-cd "$(dirname "$0")"
+old_db="$(dirname "$0")/weight.db"
+db="$HOME/.local/share/weight-tracker/weight.db"
+
+mkdir -p "$(dirname "$db")"
+if [ -e "$old_db" ] && [ ! -e "$db" ]; then
+  mv "$old_db" "$db"
+fi
 
 cmd() {
-  sqlite3 -column weight.db "$@"
+  sqlite3 -column "$db" "$@"
 }
 
 cmd "

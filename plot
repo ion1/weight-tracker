@@ -1,12 +1,10 @@
 #!/bin/sh
 set -e
 
-cd "$(dirname "$0")"
-
 datafile="$(mktemp)"
 trap 'rm -f "$datafile"' 0 1 2 13 15
 
-sqlite3 weight.db "
+sqlite3 "$HOME/.local/share/weight-tracker/weight.db" "
   select strftime('%s', time, 'localtime'), weight from weights order by time;
 " >"$datafile"
 
