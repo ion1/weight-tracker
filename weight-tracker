@@ -89,7 +89,7 @@ E
 E
   else
     cat >>"$script" <<E
-      set y2tics
+      set y2tics out
       set y2label 'BMI'
   
       plot '$datafile' using 1:2 notitle with points, \
