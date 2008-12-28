@@ -60,7 +60,7 @@ plot() {
   local script="$(mktemp)"
   tempfiles="$tempfiles $datafile $script"
 
-  sqlite3 "$db" >"$datafile" <<E
+  sqlite3 -list "$db" >"$datafile" <<E
     select strftime('%s', time, 'localtime'), weight from weights order by time;
 E
 
