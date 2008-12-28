@@ -85,7 +85,7 @@ E
   if [ -z "$height" ]; then
     cat >>"$script" <<E
       plot '$datafile' using 1:2 notitle with points, \
-           '$datafile' using 1:2 notitle smooth bezier with lines
+           '$datafile' using 1:2 notitle smooth sbezier with lines
 E
   else
     cat >>"$script" <<E
@@ -93,8 +93,8 @@ E
       set y2label 'BMI'
   
       plot '$datafile' using 1:2 notitle with points, \
-           '$datafile' using 1:2 notitle smooth bezier with lines, \
-           '$datafile' using 1:(\$2/($height)**2) axes x1y2 notitle smooth bezier with lines
+           '$datafile' using 1:2 notitle smooth sbezier with lines, \
+           '$datafile' using 1:(\$2/($height)**2) axes x1y2 notitle smooth sbezier with lines
 E
   fi
 
