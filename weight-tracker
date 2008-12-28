@@ -51,7 +51,7 @@ E
 
 add() {
   sqlite3 "$db" <<E
-    insert into weights (time, weight) values (datetime('now'), $1);
+    insert into weights (time, weight) values (datetime('now'), ($1));
 E
 }
 
@@ -94,7 +94,7 @@ E
   
       plot '$datafile' using 1:2 notitle with points, \
            '$datafile' using 1:2 notitle smooth bezier with lines, \
-           '$datafile' using 1:(\$2/$height**2) axes x1y2 notitle smooth bezier with lines
+           '$datafile' using 1:(\$2/($height)**2) axes x1y2 notitle smooth bezier with lines
 E
   fi
 
