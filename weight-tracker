@@ -65,7 +65,7 @@ plot() {
 E
 
   cat >>"$script" <<E
-    set term png transparent size 950, 400 enhanced
+    set term png size 950, 400 enhanced
     set output '$1'
 
     set autoscale yfix
