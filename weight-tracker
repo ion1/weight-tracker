@@ -18,7 +18,6 @@
 
 set -e
 
-old_db="`dirname "$0"`/weight.db"
 db="$HOME/.local/share/weight-tracker/weight.db"
 config="$HOME/.config/weight-tracker/config"
 
@@ -37,9 +36,6 @@ usage() {
 
 init_db() {
   mkdir -p "`dirname "$db"`"
-  if [ -e "$old_db" ] && [ ! -e "$db" ]; then
-    mv "$old_db" "$db"
-  fi
 
   sqlite3 "$db" <<E
     create table if not exists weights (
