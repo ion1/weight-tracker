@@ -18,7 +18,7 @@
 
 set -e
 
-old_db="$(dirname "$0")/weight.db"
+old_db="`dirname "$0"`/weight.db"
 db="$HOME/.local/share/weight-tracker/weight.db"
 config="$HOME/.config/weight-tracker/config"
 
@@ -36,7 +36,7 @@ usage() {
 }
 
 init_db() {
-  mkdir -p "$(dirname "$db")"
+  mkdir -p "`dirname "$db"`"
   if [ -e "$old_db" ] && [ ! -e "$db" ]; then
     mv "$old_db" "$db"
   fi
@@ -56,8 +56,8 @@ E
 }
 
 plot() {
-  local datafile="$(mktemp)"
-  local script="$(mktemp)"
+  local datafile="`mktemp`"
+  local script="`mktemp`"
   tempfiles="$tempfiles $datafile $script"
 
   sqlite3 -list "$db" >"$datafile" <<E
