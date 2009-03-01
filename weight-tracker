@@ -34,7 +34,7 @@ usage() {
 }
 
 init_db() {
-  mkdir -p "`dirname "$db"`"
+  mkdir -p "$(dirname "$db")"
 
   sqlite3 "$db" <<E
     create table if not exists weights (
@@ -51,8 +51,8 @@ E
 }
 
 plot() {
-  local datafile="`mktemp`"
-  local script="`mktemp`"
+  local datafile="$(mktemp)"
+  local script="$(mktemp)"
   tempfiles="$tempfiles $datafile $script"
 
   sqlite3 -list "$db" >"$datafile" <<E
